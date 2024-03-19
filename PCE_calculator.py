@@ -11,7 +11,7 @@ class InputChecker:
         - T1: Period T1.
         - muf: friction coefficient
         - mratio: mass ratio m1*/mtot
-        - Tb: Base periot Tb
+        - Tb: Base period Tb
         - RQI: response quantity of interest
         - IM: intensity measure
 
@@ -46,9 +46,9 @@ class DataLoader:
         Load DataFrames based on the input parameters.
 
         Args:
-        - IM: Value of IM.
-        - RQI: Value of RQI.
-        - var: Value of var.
+        - IM: Value of intensity measure.
+        - RQI: Value of response quantity of interest.
+        - var: model variable (e.g., c1, c2 and beta).
 
         Returns:
         - DataFrame loaded from the CSV file.
@@ -198,7 +198,7 @@ class PCECalculator:
         - T1: Period T1.
         - muf: friction coefficient
         - mratio: mass ratio m1*/mtot
-        - Tb: Base periot Tb
+        - Tb: Base period Tb
         - RQI: response quantity of interest
         - IM: intensity measure
 
