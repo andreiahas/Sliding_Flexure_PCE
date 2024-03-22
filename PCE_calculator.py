@@ -2,20 +2,19 @@ import os
 import pandas as pd
 
 class InputChecker:
-    @staticmethod
     def check_input(T1, muf, mratio, Tb, RQI, IM):
         """
         Check if the input parameters are within specified ranges.
 
         Args:
-        - T1: Period T1.
-        - muf: friction coefficient
+        - T1: superstructure first-mode natural period T1.
+        - muf: base-isolation friction coefficient
         - mratio: mass ratio m1*/mtot
-        - Tb: Base period Tb
+        - Tb: Base isolation period Tb
         - RQI: response quantity of interest
         - IM: intensity measure
 
-        Returns:
+        Return:
         - If any input parameter is outside the specified range, returns an error message.
         Otherwise, returns None.
         """
@@ -40,17 +39,16 @@ class InputChecker:
         return None  # No errors found
 
 class DataLoader:
-    @staticmethod
     def load_DF_from_CSV_sliding(IM, RQI, var):
         """
         Load DataFrames based on the input parameters.
 
         Args:
-        - IM: Value of intensity measure.
-        - RQI: Value of response quantity of interest.
-        - var: model variable (e.g., c1, c2 and beta).
+        - IM: Value of IM.
+        - RQI: Value of RQI.
+        - var: Value of var.
 
-        Returns:
+        Return:
         - DataFrame loaded from the CSV file.
         """
         # Obtain the name of the current directory
@@ -91,7 +89,6 @@ class DataLoader:
         return df_basis, df_coefs
 
 class LegendrePolynomials:
-    @staticmethod
     def map_to_interval_m1to1(Z, a, b):
         """
         Map a value Z within the interval [a, b] to the interval [-1, 1].
@@ -101,7 +98,7 @@ class LegendrePolynomials:
         - a: Lower bound of the interval [a, b].
         - b: Upper bound of the interval [a, b].
 
-        Returns:
+        Return:
         - The mapped value within the interval [-1, 1].
         """
         # Map the proportional value to the [-1, 1] interval
@@ -109,7 +106,6 @@ class LegendrePolynomials:
 
         return mapped_value
 
-    @staticmethod
     def normalized_legendre_polynomials(x_values,keys):
         """
         Calculate normalized Legendre polynomials of degrees 1 to 7 for multiple input values.
@@ -118,7 +114,7 @@ class LegendrePolynomials:
         - x_values: A list or tuple of input values at which to evaluate the normalized Legendre polynomials.
         - keys: the name of the variables that will be the keys in the dictionary
 
-        Returns:
+        Return:
         - A dictionary where keys are input value position and values are dictionaries containing
         normalized Legendre polynomials of degrees 1 to 7 evaluated at the corresponding input value.
         """
@@ -160,7 +156,6 @@ class LegendrePolynomials:
         return normalized_legendre_values_all
 
 class PCECalculator:
-    @staticmethod
     def calculate_PCE(Ldict, df_basis, df_coefs):
         """
         Calculate PCE based on the input data.
@@ -170,7 +165,7 @@ class PCECalculator:
         - df_basis: DataFrame containing basis values.
         - df_coefs: DataFrame containing coefficients.
 
-        Returns:
+        Return:
         - YPCE: Calculated value of PCE.
         """
         # Initialize PCE as a numeric value
@@ -189,21 +184,20 @@ class PCECalculator:
 
         return YPCE
 
-    @staticmethod
     def run_PCE(T1,muf,mratio,Tb,RQI,IM):
         """
-        Calculate PCE metamodel results for coefficients c1, c2 and beta.
+        Calculate PCE metamodel results for coefficients c1, c2, and beta.
     
         Args:
-        - T1: Period T1.
-        - muf: friction coefficient
+        - T1: superstructure first-mode natural period T1.
+        - muf: base-isolation friction coefficient
         - mratio: mass ratio m1*/mtot
-        - Tb: Base period Tb
+        - Tb: base isolation period Tb
         - RQI: response quantity of interest
         - IM: intensity measure
 
-        Returns:
-        - c1, c2, beta: Calculated coefficient c1, c2 and beta with the PCE metamodel.
+        Return:
+        - c1, c2, beta: Calculated coefficients c1, c2, and beta with the PCE metamodel.
         """
         ## PCE framework:
         # Check if inputs are in the possible range:
@@ -228,7 +222,7 @@ class PCECalculator:
         # Create the array X from transformation of vector Z using list comprehension:
         X = [LegendrePolynomials.map_to_interval_m1to1(value, low, high) for value, low, high in values_and_ranges]
 
-        # this functions return a dictonay with Legendre polynomials (degree,value), inside of a dictionary linked to the keys
+        # This function returns a dictonary with Legendre polynomials (degree,value), inside of a dictionary linked to the keys
         legendre_dict_X = LegendrePolynomials.normalized_legendre_polynomials(X,keys)
 
         c1 = PCECalculator.calculate_PCE(legendre_dict_X, df_basis_C1, df_coefs_C1)
