@@ -1,7 +1,6 @@
 This folder contains the codes necessary to calculate the Polynomial Chaos Expansion (PCE) metamodel of the following publication:
 
-A. Silva, D. Pizarro, and B. Stojadinovic, "Displacement prediction equations for seismic design of single
-friction pendulum base-isolated structures", In Press.
+da Silva AHA, Pohl DP, Stojadinović B. Displacement prediction equations for seismic design of single friction pendulum base-isolated structures. Earthquake Engng Struct Dyn. 2024;1-24. https://doi.org/10.1002/eqe.4201
 
 The Python functions necessary to perform the calculations are contained in the file PCE_calculator.py.
 The PCE coefficients and basis functions are contained in the subfolder CSVfiles.
